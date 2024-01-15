@@ -5,6 +5,14 @@ import cmd
 import sys
 import re
 import os
+from abc import abstractmethod, ABCMeta
+
+
+# використання абстрактного класу
+class MyBaseClass(metaclass=ABCMeta):
+    @abstractmethod
+    def value(self):
+        pass
 
 
 # Загальний клас для визначення логикі полів
