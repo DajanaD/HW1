@@ -5,14 +5,9 @@ import cmd
 import sys
 import re
 import os
-from abc import abstractmethod, ABCMeta
+from abc import ABC, abstractmethod
 
 
-# використання абстрактного класу
-class MyBaseClass(metaclass=ABCMeta):
-    @abstractmethod
-    def value(self):
-        pass
 
 
 # Загальний клас для визначення логикі полів
@@ -171,22 +166,30 @@ class Controller(cmd.Cmd):
     
 exit_words = ["good bye", "close", "exit", "bye"]
 
-class NoteActions:
+class Note(ABC):
+    @abstractmethod
+    def handler(self)-> None:
+        pass
+        
+
+class AddNote(Note):
     @staticmethod
-    def add_note(notes, name, title):
+    def handler(notes, name, title):
         notes[name] = title
         return f"Note added: {name}, {title}"
 
+class EditNote(Note):
     @staticmethod
-    def edit_note(notes, name, new_title):
+    def handler(notes, name, new_title):
         if name in notes:
             notes[name] = new_title
             return f"Note for {name} edited: {new_title}"
         else:
             return f"Note for {name} not found."
 
+class DeleteNote(Note):
     @staticmethod
-    def delete_note(notes, name):
+    def handler(notes, name):
         if name in notes:
             del notes[name]
             return f"Note for {name} deleted."
